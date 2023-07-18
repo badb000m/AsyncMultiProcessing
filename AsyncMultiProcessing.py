@@ -17,7 +17,7 @@ class AsyncMultiProcessing:
         if self.modules_path is None:
             raise ValueError('modules_path must be specified.')
 
-        asyncio.run(self.load_processes())  # Converts Python files with classes to asyncio threads in a dictionary.
+        asyncio.run(self.load_processes())  # Converts Python files with classes to 'Processes' in a dictionary.
         asyncio.run(self.run())
 
     async def load_processes(self) -> None:
@@ -58,6 +58,7 @@ class AsyncMultiProcessing:
 
         imported_module = importlib.import_module(module_pythonic_path, package)
         module = getattr(imported_module, module_name)
+
         return Process(target=module)
 
     async def add_process(self, process_object: Process, process_name: str) -> None:
@@ -112,7 +113,7 @@ class AsyncMultiProcessing:
         process = self._processes[process_name]
         process.terminate()
 
-        self._processes[process_name] = Process(target=process.target)
+        self._processes[process_name] = Process(target=process.target_class)
 
         return None
 
@@ -140,4 +141,4 @@ class AsyncMultiProcessing:
 
 
 if __name__ == '__main__':
-    AsyncMultiProcessing(modules_path='Modules')
+    AsyncMultiProcessing(modules_path='')
